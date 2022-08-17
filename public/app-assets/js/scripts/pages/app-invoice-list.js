@@ -27,7 +27,7 @@ $(function () {
   // datatable
   if (dtInvoiceTable.length) {
     var dtInvoice = dtInvoiceTable.DataTable({
-      ajax: assetPath + 'data/invoice-list.json', // JSON file to add data
+      ajax: 'dashboard/invoices',//assetPath + 'data/invoice-list.json', // JSON file to add data
       autoWidth: false,
       columns: [
         // columns according to JSON
