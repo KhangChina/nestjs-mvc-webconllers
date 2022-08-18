@@ -1,5 +1,6 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import * as multer from 'multer'
 
 @Injectable()
 export class LoginGuard extends AuthGuard('local') {
@@ -7,6 +8,6 @@ export class LoginGuard extends AuthGuard('local') {
     const result = (await super.canActivate(context)) as boolean;
     const request = context.switchToHttp().getRequest();
     await super.logIn(request);
-    return result;
+    return request;
   }
 }

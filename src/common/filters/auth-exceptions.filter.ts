@@ -6,6 +6,7 @@ import {
     HttpException,
     UnauthorizedException,
     ForbiddenException,
+    NotFoundException,
   } from '@nestjs/common';
   import { Request, Response } from 'express';
   
@@ -19,15 +20,15 @@ import {
       const ctx = host.switchToHttp();
       const response = ctx.getResponse<Response>();
       const request = ctx.getRequest<IRequestFlash>();
-      console.log("AuthExceptionFilter")
-      // if (
-      //   exception instanceof UnauthorizedException ||
-      //   exception instanceof ForbiddenException
-      // ) {
-      //  // request.flash('loginError', 'Please try again!');
-      //   response.redirect('/login');
-      // } else {
-      //   response.redirect('/error');
-      // }
+      if (
+        exception instanceof UnauthorizedException ||
+        exception instanceof ForbiddenException ||
+        exception instanceof NotFoundException
+      ) {
+       // request.flash('loginError', 'Please try again!');
+        response.redirect('/login');
+      } else {
+        response.redirect('/error');
+      }
     }
   }

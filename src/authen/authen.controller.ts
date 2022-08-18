@@ -1,10 +1,10 @@
-import { Controller, Post, Get, Render, UseGuards, Res, Req, Redirect } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Controller, Post, Get, Render, UseGuards, Res, Req, Request, UseFilters } from '@nestjs/common';
+import { Response, } from 'express';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { AuthenticatedGuard } from 'src/common/guards/authenticated.guard';
 import { LoginGuard } from 'src/common/guards/login.guard';
 import { AuthenService } from './authen.service';
-import { CreateAuthenDto } from './dto/create-authen.dto';
-import { UpdateAuthenDto } from './dto/update-authen.dto';
-import  { SessionSerializer }  from './session.serializer';
+
 
 @Controller('authen')
 export class AuthenController {
@@ -12,15 +12,27 @@ export class AuthenController {
 
   @UseGuards(LoginGuard) // check
   @Post('/login')
-  login(@Req() req: Request,@Res() res: Response) {
-    //const data: any = req.body
-    // // console.log(data)
-    // const username = data.username
-    // const password = data.password
-    // console.log(username + " - " + password) 
-    // //res.session.save({username})
-    // res.redirect('/dashboard');
+  // @UseFilters(new HttpExceptionFilter())
+  login(@Req() req: Request, @Res() res: Response) {
+    res.redirect('/dashboard')
+  }
+
+  @Get('/logout')
+  logout(@Request() req, @Res() res: Response) {
+    req.logout(function (err) {
+      if (err) { return (err); }
+      res.redirect('/login')
+    });
+  }
+
+
+  @UseGuards(LoginGuard) // check
+  @Get('/login-fail')
+  @Render('authen/login-fail')
+  // @UseFilters(new HttpExceptionFilter())
+  login_fail(@Req() req: Request, @Res() res: Response) {
     res.redirect('/dashboard')
   }
 }
+
 
